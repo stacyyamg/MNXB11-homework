@@ -149,4 +149,7 @@ grep '\-04\-' $CLEANER_BAREDATAFILENAME > $FILTER_FILTERFILENAME_ONLYAPRIL
 ## More about awk: <https://www.tutorialspoint.com/awk/awk_basic_examples.htm>
 FILTER_FILTERFILENAME_ONLYNEGATIVE="onlynegative_$FILTER_FILTEREDFILENAME"
 log "Filtering on only negative temperatures, writing to $FILTER_FILTERFILENAME_ONLYNEGATIVE"
-awk '$3 < 0 {print $0}' $CLEANER_BAREDATAFILENAME > $FILTER_FILTERFILENAME_ONLYNEGATIVE
+# Select only measurements with temperature greater than 20
+FILTER_FILTERFILENAME_OVER20="over20_$FILTER_FILTEREDFILENAME"
+log "Filtering on only temperatures greater than 20, writing to $FILTER_FILTERFILENAME_OVER20"
+awk '$3 > 20 {print $0}' $CLEANER_BAREDATAFILENAME > $FILTER_FILTERFILENAME_OVER20

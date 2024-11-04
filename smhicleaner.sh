@@ -39,7 +39,7 @@ CLEANER_SCRIPTNAME=`basename $0`
 # information on how to run this script.
 usage(){
 	echo "----"
-	echo -e "  To,call,this,script,please,use"
+	echo -e "  To call this script please use"
 	echo -e "   $0 '<path-to-datafile>'"
 	echo -e "  Example:"
     echo -e "   $0 '../data/smhi-opendata_1_52240_20200905_163726.csv'"
@@ -55,10 +55,10 @@ createlog(){
   CLEANER_LOGFILE=${CLEANER_DATE}_${CLEANER_SCRIPTNAME}.log
   touch $CLEANER_LOGFILE
   if [[ $? != 0 ]]; then
-     echo "cannot,write,logfile,exiting" 1>&2
+     echo "cannot write logfile, exiting" 1>&2
      exit 1
   fi
-  echo "Redirecting,cleaner,logs,to $CLEANER_LOGFILE"
+  echo "Redirecting cleaner logs to $CLEANER_LOGFILE"
 }
 
 # logging utility
@@ -68,7 +68,7 @@ createlog(){
 # If logfile missing use default CLEANER_LOGFILE
 log(){
   if [[ "x$CLEANER_LOGFILE" == "x" ]]; then
-    echo "Undefined,variable,CLEANER_LOGFILE, please,check,code: createlog() missing. Exiting" 1>&2
+    echo "Undefined variable CLEANER_LOGFILE, please check code: createlog() missing. Exiting" 1>&2
     exit 1
   fi
   CLEANER_LOGMESSAGE=$1
@@ -97,7 +97,7 @@ CLEANER_SMHIINPUT=$1
 # function in the library above and exit with error
 # See Tutorial 4 Slide 45-47 and exercises 4.14, 4.15
 if [[ "x$CLEANER_SMHIINPUT" == 'x' ]]; then
-   echo "Missing,input,file,parameter, exiting" 1>&2
+   echo "Missing input file parameter, exiting" 1>&2
    usage
    exit 1
 fi
@@ -119,7 +119,7 @@ CLEANER_BAREDATAFILENAME="baredata_${CLEANER_DATAFILE}"
 if [[ "x$CLEANER_SMHIINPUT" != "x" ]]; then
    # T4.2 check if the file is a directory, it should not be!
    if [[ -d $CLEANER_SMHIINPUT ]]; then
-      echo -e "This,script,requires,a,data,file,and,not,a,directory, exiting..." 1>&2
+      echo -e "This script requires a data file and not a directory, exiting..." 1>&2
       exit 1
    fi
    # T4.3 Copy the file in the current directory as
@@ -132,7 +132,7 @@ fi
 
 # T5 Check that the input file has been copied with no errors:
 if [[ $CLEANER_COPY_OUTCOME != 0 ]]; then
-   echo "Error,downloading,or,copying,file, check,filename,or,command,syntax. Exiting...." 1>&2
+   echo "Error downloading or copying file, check filename or command syntax. Exiting...." 1>&2
    usage
    exit 1
 fi
@@ -159,4 +159,4 @@ STARTLINE=$(( $STARTLINE + 1 ))
 # - Fix format for the "strange" lines with comments (cut)
 # - Convert format to spaces instead of commas (sed)
 log "Perform cleanup in one line, result in $CLEANER_BAREDATAFILENAME"
-tail -n +$STARTLINE $CLEANER_ORIGINALFILENAME | cut -d';' -f 1,2,3,4,5 | sed 's/;/ /g' > $CLEANER_BAREDATAFILENAME
+tail -n +$STARTLINE $CLEANER_ORIGINALFILENAME | cut -d';' -f 1,2,3,4,5 | sed 's/;/,/g' > $CLEANER_BAREDATAFILENAME
